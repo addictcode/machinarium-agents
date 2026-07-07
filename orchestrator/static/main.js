@@ -489,15 +489,23 @@ function startDemo() {
 }
 
 let gotHello = false, demoStarted = false;
+function fallbackToDemo() { if (!gotHello && !demoStarted) { demoStarted = true; startDemo(); } }
+
 function connect() {
-  let ws; try { ws = new WebSocket(`ws://${location.host}/ws`); } catch { if (!demoStarted) { demoStarted = true; startDemo(); } return; }
+  // Статический демо-хостинг (GitHub Pages и т.п.) не может держать бэкенд.
+  // ws:// с https-страницы браузер блокирует как mixed content — причём
+  // некоторые браузеры в этом случае НЕ шлют close/error, а вечно держат
+  // сокет в состоянии CONNECTING. Поэтому на https сразу показываем демо,
+  // не дожидаясь обречённого подключения.
+  if (location.protocol === 'https:') { fallbackToDemo(); return; }
+  let ws; try { ws = new WebSocket(`ws://${location.host}/ws`); } catch { fallbackToDemo(); return; }
   ws.onopen = () => { const c = document.getElementById('conn'); c.textContent = 'на связи'; c.className = 'ok'; };
   ws.onmessage = m => {
     const ev = JSON.parse(m.data);
     if (ev.type === 'hello') { gotHello = true; for (const a of ev.agents) META[a.name] = a; if (demoTimer) { clearInterval(demoTimer); demoTimer = null; chatLog.innerHTML = ''; chatMsg('sys', '', '⚙️ команда на связи. Опиши задачу ниже.'); } }
     handleEvent(ev);
   };
-  ws.onclose = () => { const c = document.getElementById('conn'); c.textContent = 'переподключение…'; c.className = 'err'; if (!gotHello && !demoStarted) { demoStarted = true; startDemo(); } setTimeout(connect, 2000); };
+  ws.onclose = () => { const c = document.getElementById('conn'); c.textContent = 'переподключение…'; c.className = 'err'; fallbackToDemo(); setTimeout(connect, 2000); };
 }
 
 /* ============================ СТАРТ ============================= */
@@ -506,6 +514,10 @@ function connect() {
   try { await Promise.race([Promise.all([document.fonts.load("30px 'Rye'"), document.fonts.load("30px 'Neucha'")]), new Promise(r => setTimeout(r, 1500))]); } catch {}
   await buildEnvironment();
   if (new URLSearchParams(location.search).has('demo')) startDemo(); else connect();
+  // Предохранитель: что бы ни пошло не так с реальным подключением
+  // (зависший сокет, недоступный бэкенд), через 4с показываем демо-сцену —
+  // экран загрузки не должен зависать вечно.
+  setTimeout(fallbackToDemo, 4000);
   requestAnimationFrame(loop);
 })();
 
