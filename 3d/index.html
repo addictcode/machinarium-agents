@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Машинариум — котельная №7 (3D)</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Neucha&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<!-- Three.js модулем с CDN, без сборки -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app">
+  <canvas id="gl"></canvas>
+
+  <!-- Оверлей-дашборд -->
+  <div id="hud">
+    <div id="plate">
+      <div id="title">МАШИНАРИУМ</div>
+      <div id="subtitle">котельная №7 — живая мастерская</div>
+    </div>
+    <div id="meters">
+      <span id="fps">-- fps</span>
+      <span id="objcount">--</span>
+      <button id="sound">🔇 звук</button>
+    </div>
+    <div id="log"></div>
+    <div id="hintbar">двигай мышью — камера следит · колесо — зум · кликай на механизмы</div>
+  </div>
+
+  <!-- всплывающая подсказка у курсора -->
+  <div id="tooltip"></div>
+
+  <!-- экран загрузки -->
+  <div id="loader"><div>раскочегариваем котёл…</div></div>
+</div>
+<script type="module" src="scene.js"></script>
+</body>
+</html>

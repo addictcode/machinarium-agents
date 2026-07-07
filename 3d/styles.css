@@ -1,0 +1,81 @@
+/* Машинариум 3D — оверлей поверх полноэкранного canvas */
+
+html, body { height: 100%; }
+body {
+  margin: 0; overflow: hidden; background: #17120c;
+  font-family: 'Neucha', cursive; color: #d9cfae;
+}
+#app { position: fixed; inset: 0; }
+canvas#gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* ---- дашборд ---- */
+#hud { position: absolute; inset: 0; pointer-events: none; }
+
+#plate {
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+  text-align: center; padding: 10px 34px 12px;
+  background: linear-gradient(#6e6852, #443e2e);
+  border: 3px solid #2c2618; border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.6), inset 0 0 24px rgba(0,0,0,.35);
+}
+#title {
+  font-family: 'Special Elite', serif; font-size: 26px;
+  letter-spacing: 10px; color: #e8dcb0;
+  text-shadow: 0 0 14px rgba(255,214,140,.35);
+}
+#subtitle { font-size: 14px; color: #b0a482; letter-spacing: 2px; }
+
+#meters {
+  position: absolute; top: 16px; right: 18px; display: flex; gap: 14px;
+  align-items: center; font-size: 14px; color: #b0a482;
+  text-shadow: 0 1px 3px rgba(0,0,0,.8);
+}
+#meters button {
+  pointer-events: auto; cursor: pointer;
+  background: linear-gradient(#6e6852, #443e2e);
+  color: #d9cfae; border: 2px solid #2c2618; border-radius: 6px;
+  font-family: 'Neucha', cursive; font-size: 15px; padding: 4px 12px;
+  opacity: .9;
+}
+#meters button:hover { opacity: 1; }
+
+/* журнал событий — полоска старой бумаги */
+#log {
+  position: absolute; left: 14px; bottom: 44px;
+  width: min(40vw, 420px); max-height: 96px; overflow: hidden;
+  padding: 6px 14px 8px;
+  background: linear-gradient(#d6ccb4, #c4b99f);
+  border-radius: 3px; opacity: .92;
+  box-shadow: 0 4px 18px rgba(0,0,0,.55), inset 0 0 30px rgba(120,100,60,.25);
+  color: #3a352a; font-size: 14px; line-height: 1.5;
+  -webkit-mask-image: linear-gradient(#000 60%, transparent);
+          mask-image: linear-gradient(#000 60%, transparent);
+}
+#log:empty { display: none; }
+#log .hot { color: #6b4a12; }
+#log .ok  { color: #3f5a2e; }
+#log .err { color: #8a2f1f; }
+
+#hintbar {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  font-size: 14px; color: #93876c; letter-spacing: 1px;
+  text-shadow: 0 1px 3px rgba(0,0,0,.8);
+}
+
+/* подсказка у курсора */
+#tooltip {
+  position: absolute; display: none; pointer-events: none; z-index: 10;
+  padding: 6px 14px; transform: translate(14px, -34px);
+  background: #e9e2cc; color: #39311f;
+  border: 2px solid rgba(40,32,18,.9); border-radius: 16px;
+  font-size: 15px; white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0,0,0,.4);
+}
+
+/* загрузка */
+#loader {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: #17120c; z-index: 20; transition: opacity .6s;
+  font-size: 20px; letter-spacing: 2px; color: #b0a482;
+}
+#loader.done { opacity: 0; pointer-events: none; }
