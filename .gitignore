@@ -1,0 +1,28 @@
+# Секреты — НИКОГДА не коммитим (только .env.example)
+.env
+.env.local
+*.key
+*.pem
+
+# Рабочая папка агентов (генерируемые файлы задач)
+workspace/
+!workspace/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Локальные настройки редактора/Claude
+.claude/
+.vscode/
+.idea/
+
+# ОС
+.DS_Store
+Thumbs.db
+
+# Логи
+*.log

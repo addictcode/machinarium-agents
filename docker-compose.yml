@@ -1,0 +1,52 @@
+# Машинариум — персональная среда управления командой AI-агентов.
+# Поднимается одной командой: docker compose up --build
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: machinarium-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  orchestrator:
+    build:
+      context: .
+      dockerfile: orchestrator/Dockerfile
+    container_name: machinarium-orchestrator
+    env_file: .env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - WORKSPACE_DIR=/app/workspace
+    ports:
+      - "8080:8080"
+    volumes:
+      # статика дашборда — read-only mount, правки видны без пересборки.
+      # (Python-код вшит в образ: bind-mount кода на macOS даёт Errno 35.)
+      - ./orchestrator/static:/app/orchestrator/static:ro
+      # мастерская агентов — файлы появляются на диске у пользователя
+      - ./workspace:/app/workspace
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  bot:
+    build:
+      context: .
+      dockerfile: bot/Dockerfile
+    container_name: machinarium-bot
+    env_file: .env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - ORCHESTRATOR_URL=http://orchestrator:8080
+    depends_on:
+      redis:
+        condition: service_healthy
+      orchestrator:
+        condition: service_started
+    restart: unless-stopped

@@ -1,0 +1,39 @@
+{
+  "comment": "Редактор сцены: каждый механизм — запись здесь. type = фабрика из objects.js, action = реакция из ACTIONS в scene.js. Позиции в метрах, поворот в радианах.",
+  "mechanisms": [
+    { "type": "gear", "name": "Маховик-прадед", "hint": "Главный маховик — раскрути меня!", "action": "gearKick",
+      "pos": [-8.6, 5.6, -6.4], "params": { "r": 1.9, "teeth": 15, "depth": 0.42, "speed": 0.35, "dir": 1 } },
+    { "type": "gear", "name": "Средняя шестерня", "hint": "Передаточное звено", "action": "gearKick",
+      "pos": [-6.2, 3.9, -6.3], "params": { "r": 1.1, "teeth": 11, "depth": 0.34, "speed": 0.6, "dir": -1 } },
+    { "type": "gear", "name": "Шестерёнка-внучка", "hint": "Мелкая, но шустрая", "action": "gearKick",
+      "pos": [-4.7, 5.1, -6.35], "params": { "r": 0.7, "teeth": 9, "depth": 0.3, "speed": 1.0, "dir": 1 } },
+    { "type": "gear", "name": "Настенная шестерня", "hint": "Крутится в одиночестве", "action": "gearKick",
+      "pos": [4.6, 7.2, -6.5], "params": { "r": 0.9, "teeth": 10, "depth": 0.3, "speed": 0.45, "dir": -1 } },
+
+    { "type": "lamp", "name": "Лампа левая", "hint": "Тёплый свет", "action": "lampToggle",
+      "pos": [-7, 10.4, -1.5], "params": { "drop": 2.2, "light": 0.85 } },
+    { "type": "lamp", "name": "Лампа центральная", "hint": "Щёлкни — сменю цвет", "action": "lampToggle",
+      "pos": [0.3, 10.4, 0.5], "params": { "drop": 2.6, "light": 1.0 } },
+    { "type": "lamp", "name": "Лампа-мигалка", "hint": "Контакт барахлит…", "action": "lampToggle",
+      "pos": [7.5, 10.4, -1], "params": { "drop": 2.0, "light": 0.7, "flicker": true } },
+
+    { "type": "valve", "name": "Вентиль пара", "hint": "Стравить пар", "action": "valveBurst",
+      "pos": [2, 5.4, -6.35], "params": { "r": 0.5 } },
+    { "type": "valve", "name": "Вентиль котла", "hint": "Осторожно, горячо!", "action": "valveBurst",
+      "pos": [7.2, 3.4, -3.4], "rot": [0, 0.5, 0], "params": { "r": 0.42 } },
+
+    { "type": "lever", "name": "ТУРБО-РУБИЛЬНИК", "hint": "ТУРБО! Дёрни меня", "action": "turbo",
+      "pos": [-0.9, 1.27, 2.6], "params": { "size": 1.15 }, "color": "#c03428" },
+    { "type": "lever", "name": "Рычаг вентиляции", "hint": "Продуть систему", "action": "ventKick",
+      "pos": [1.6, 1.27, 2.6], "params": { "size": 0.85 }, "color": "#3f6a4e" },
+
+    { "type": "tank", "name": "Колба с зельем", "hint": "Булькает… потряси!", "action": "tankStorm",
+      "pos": [4.9, 0, -5.1], "params": { "r": 0.85, "h": 2.9, "liquid": "#4f8f5e" } },
+
+    { "type": "cabinet", "name": "Шкаф с сюрпризом", "hint": "Что там внутри?", "action": "cabinetToggle",
+      "pos": [-12.6, 0, -5.6], "rot": [0, 0.35, 0], "params": { "w": 1.9, "h": 2.8, "d": 1.0 } },
+
+    { "type": "vent", "name": "Дымоход", "hint": "Вечно дымит", "action": "ventBurst",
+      "pos": [-2.8, 0, -6.1], "params": { "h": 4.6, "r": 0.3, "rate": 2.2 } }
+  ]
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>MACHINARIUM — workshop IDE</title>
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Special+Elite&family=Neucha&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<!-- Верхняя вывеска -->
+<header id="topbar">
+  <div id="title">MACHINARIUM</div>
+  <div id="sub">agent workshop · boiler room</div>
+  <div id="meters">
+    <span id="fps">-- fps</span>
+    <span id="conn" class="err">connecting…</span>
+    <button id="sound" class="cog-btn">🔇</button>
+  </div>
+</header>
+
+<!-- Левая панель: файлы -->
+<aside id="files" class="panel">
+  <div class="panel-head"><span>◰ FILES</span><button class="fold" data-panel="files">▾</button></div>
+  <div class="panel-body">
+    <div id="file-task" class="muted">файлы появятся, когда агенты возьмут задачу</div>
+    <ul id="file-list"></ul>
+  </div>
+</aside>
+
+<!-- Просмотрщик файла -->
+<div id="viewer" class="hidden">
+  <div id="viewer-head">
+    <span id="viewer-name"></span>
+    <span>
+      <a id="viewer-open" href="#" target="_blank" class="vbtn">↗ open</a>
+      <button id="viewer-close" class="vbtn">✕</button>
+    </span>
+  </div>
+  <pre id="viewer-body"></pre>
+</div>
+
+<!-- Правая панель: чат с агентами -->
+<aside id="chat" class="panel">
+  <div class="panel-head"><span>✎ CHAT · команда агентов</span><button class="fold" data-panel="chat">▾</button></div>
+  <div id="chat-log"></div>
+  <div id="chat-input-row">
+    <textarea id="chat-input" rows="1" placeholder="Опиши задачу команде… (Enter — отправить)"></textarea>
+    <button id="chat-send" class="cog-btn">▶</button>
+  </div>
+</aside>
+
+<div id="tooltip"></div>
+<div id="loader"><div>раскочегариваем котельную…</div></div>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
