@@ -195,6 +195,9 @@ addEventListener('wheel', e => {
    агентов побегут в журнал. Иначе молча пропускаем. */
 
 try {
+  // https-хостинг (напр. GitHub Pages) блокирует ws:// как mixed content —
+  // без бэкенда эта привязка всё равно не нужна, просто не пытаемся.
+  if (location.protocol === 'https:') throw new Error('static https host, skip bus');
   const ws = new WebSocket(`ws://${location.host}/ws`);
   ws.onmessage = m => {
     const ev = JSON.parse(m.data);
