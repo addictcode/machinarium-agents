@@ -33,22 +33,22 @@ renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.75;   // мрачно, но читаемо
+renderer.toneMappingExposure = 2.7;   // атмосферно, но хорошо видно
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x1b160d);
-scene.fog = new THREE.Fog(0x1b160d, 24, 58);
+scene.background = new THREE.Color(0x352b1c);
+scene.fog = new THREE.Fog(0x352b1c, 30, 66);
 
 const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 120);
 const CAM = { base: new THREE.Vector3(0, 6.0, 17.5), look: new THREE.Vector3(0, 3.3, -1),
   dist: 17.5, tdist: 17.5, mx: 0, my: 0, focus: null, lookX: 0 };
 camera.position.copy(CAM.base);
 
-// тусклый холодный «подвальный» свет + тёплые лужицы от ламп/котла (в objects)
-scene.add(new THREE.HemisphereLight(0x9a8d68, 0x161009, 0.85));
-const sun = new THREE.DirectionalLight(0xffdca8, 1.5);
-// тёплая заполняющая подсветка спереди-сверху, чтобы роботы читались из темноты
-const fill = new THREE.DirectionalLight(0xcaac78, 0.95); fill.position.set(2, 9, 15); scene.add(fill);
+// мягкий общий свет + тёплые лужицы от ламп/котла (в objects) поверх него
+scene.add(new THREE.HemisphereLight(0xb8ad8a, 0x2a2216, 1.15));
+const sun = new THREE.DirectionalLight(0xffe0ac, 1.9);
+// тёплая заполняющая подсветка спереди-сверху, чтобы роботы хорошо читались
+const fill = new THREE.DirectionalLight(0xd8bd8c, 1.3); fill.position.set(2, 9, 15); scene.add(fill);
 sun.position.set(7, 15, 11); sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
 Object.assign(sun.shadow.camera, { left: -22, right: 22, top: 18, bottom: -6, near: 1, far: 60 });
@@ -61,7 +61,7 @@ composer.addPass(bloom);
 
 // зерно + виньетка + лёгкая десатурация к серо-коричневому (ink-wash mood)
 const GrainVignette = {
-  uniforms: { tDiffuse: { value: null }, time: { value: 0 }, amount: { value: 0.075 } },
+  uniforms: { tDiffuse: { value: null }, time: { value: 0 }, amount: { value: 0.055 } },
   vertexShader: 'varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }',
   fragmentShader: `
     uniform sampler2D tDiffuse; uniform float time; uniform float amount; varying vec2 vUv;
@@ -69,11 +69,11 @@ const GrainVignette = {
     void main(){
       vec4 c = texture2D(tDiffuse, vUv);
       float g = dot(c.rgb, vec3(0.299,0.587,0.114));
-      c.rgb = mix(c.rgb, vec3(g)*vec3(1.07,1.0,0.86), 0.26);      // приглушить цвет
+      c.rgb = mix(c.rgb, vec3(g)*vec3(1.07,1.0,0.86), 0.16);      // приглушить цвет (мягче)
       float n = rand(vUv*vec2(1280.0,720.0)+time)-0.5;
       c.rgb += n*amount;                                          // зерно плёнки
-      vec2 d = vUv-0.5; float v = smoothstep(0.95, 0.15, dot(d,d)*1.9);
-      c.rgb *= mix(0.72, 1.0, v);                                 // виньетка (мягче)
+      vec2 d = vUv-0.5; float v = smoothstep(1.05, 0.1, dot(d,d)*1.6);
+      c.rgb *= mix(0.85, 1.0, v);                                 // виньетка (совсем мягкая)
       gl_FragColor = c;
     }`,
 };
