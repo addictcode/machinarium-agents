@@ -107,15 +107,15 @@ export const MAT = {
   init() {
     // Приглушённая серо-ржавая палитра «как в Machinarium» — темнее и глуше.
     this.iron = new THREE.MeshStandardMaterial({
-      map: metalTexture(7, '#4f4a3f'), roughness: 0.86, metalness: 0.5 });
+      map: metalTexture(7, '#6e6858'), roughness: 0.8, metalness: 0.48 });
     this.ironWall = new THREE.MeshStandardMaterial({
-      map: metalTexture(11, '#3f3a30', { plates: true }), roughness: 0.9, metalness: 0.32 });
+      map: metalTexture(11, '#5c5545', { plates: true }), roughness: 0.85, metalness: 0.3 });
     this.floor = new THREE.MeshStandardMaterial({
-      map: metalTexture(23, '#332f26', { plates: true }), roughness: 0.94, metalness: 0.28 });
+      map: metalTexture(23, '#4a4536', { plates: true }), roughness: 0.9, metalness: 0.26 });
     this.copper = new THREE.MeshStandardMaterial({
-      map: metalTexture(31, '#5e422e'), roughness: 0.6, metalness: 0.65 });
+      map: metalTexture(31, '#7c5a3e'), roughness: 0.55, metalness: 0.65 });
     this.brass = new THREE.MeshStandardMaterial({
-      map: metalTexture(41, '#8a6a34'), roughness: 0.5, metalness: 0.78 });
+      map: metalTexture(41, '#a5813e'), roughness: 0.45, metalness: 0.78 });
     this.dark = new THREE.MeshStandardMaterial({ color: 0x2e2820, roughness: 0.9, metalness: 0.2 });
     this.glass = new THREE.MeshStandardMaterial({
       color: 0xbfd0c0, transparent: true, opacity: 0.22, roughness: 0.1, metalness: 0.1,
